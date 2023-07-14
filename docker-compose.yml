@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  caddy:
+    build: 
+      context: .
+    container_name: caddy
+    restart: unless-stopped
+    networks:
+      - local
+    ports:
+      - 80:80
+      - 443:443
+    env_file:
+      - .env
+    environment:
+      MY_URL: ${MY_URL:-}
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+      - $PWD/Caddyfile:/etc/caddy/Caddyfile
+      - $PWD/index.html:/usr/share/caddy/index.html
+
+volumes:
+  caddy_data:
+  caddy_config:
+
+networks:
+  local:

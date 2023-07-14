@@ -1,0 +1,19 @@
+{
+	order rate_limit before basicauth
+}
+
+{$MY_URL} {
+    root * /usr/share/caddy
+    rate_limit {
+        zone myzone {
+            key    {remote_host}
+            events 10
+            window 1m
+        }
+        distributed {
+            write_interval 5s
+            read_interval 5s
+        }
+        sweep_interval 1m
+    }
+}
