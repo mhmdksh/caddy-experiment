@@ -8,11 +8,7 @@
         zone myzone {
             key    {remote_host}
             events 10
-            window 1m
-        }
-        distributed {
-            write_interval 5s
-            read_interval 5s
+            window 15s
         }
         sweep_interval 1m
     }
