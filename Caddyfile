@@ -3,13 +3,25 @@
 }
 
 {$MY_URL} {
-    root * /usr/share/caddy
-    rate_limit {
-        zone myzone {
-            key    {remote_host}
-            events 10
-            window 15s
+    @WHITELIST {
+        remote_ip {$WHITELIST_ADDRESSES}
+    }
+    @BLACKLIST {
+		not {
+			remote_ip {$WHITELIST_ADDRESSES}
+		}
+	}
+    handle @WHITELIST {
+        respond "Hello, you're in the whitlist!"
+    }
+    handle @BLACKLIST {
+        respond "Hey, you're in the blacklist, you're being rate limited"
+        rate_limit {
+            zone myzone {
+                key {remote_host}
+                events 10
+                window 1m
+            }
         }
-        sweep_interval 1m
     }
 }
